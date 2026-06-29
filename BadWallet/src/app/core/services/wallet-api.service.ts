@@ -4,7 +4,10 @@ import { Observable, map } from 'rxjs';
 import {
   CreateWalletPayload,
   DepositPayload,
+  PayFacturesPayload,
   PageResponse,
+  Transaction,
+  TransferPayload,
   Wallet,
   WithdrawPayload,
 } from '../models/wallet.model';
@@ -45,6 +48,8 @@ interface WalletPagePayload {
 }
 
 type WalletApiResponse = Wallet | ApiResponse<Wallet>;
+type NumberApiResponse = number | ApiResponse<number>;
+type TransactionsApiResponse = Transaction[] | ApiResponse<Transaction[]>;
 
 @Injectable({ providedIn: 'root' })
 export class WalletApiService {
@@ -86,6 +91,30 @@ export class WalletApiService {
       .pipe(map((response) => this.unwrapData(response)));
   }
 
+  getBalance(phoneNumber: string): Observable<number> {
+    return this.http
+      .get<NumberApiResponse>(`${this.baseUrl}/${encodeURIComponent(phoneNumber)}/balance`)
+      .pipe(map((response) => this.unwrapData(response)));
+  }
+
+  transfer(payload: TransferPayload): Observable<Wallet> {
+    return this.http
+      .post<WalletApiResponse>(`${this.baseUrl}/transfer`, payload)
+      .pipe(map((response) => this.unwrapData(response)));
+  }
+
+  payFactures(payload: PayFacturesPayload): Observable<Wallet> {
+    return this.http
+      .post<WalletApiResponse>(`${this.baseUrl}/pay-factures`, payload)
+      .pipe(map((response) => this.unwrapData(response)));
+  }
+
+  getTransactions(phoneNumber: string): Observable<Transaction[]> {
+    return this.http
+      .get<TransactionsApiResponse>(`${this.baseUrl}/${encodeURIComponent(phoneNumber)}/transactions`)
+      .pipe(map((response) => this.unwrapData(response)));
+  }
+
   private normalizePage(
     response: WalletPageApiResponse,
     requestedPage: number,
@@ -119,7 +148,7 @@ export class WalletApiService {
     };
   }
 
-  private unwrapData<T>(response: T | ApiResponse<T>): T {
+  unwrapData<T>(response: T | ApiResponse<T>): T {
     if (
       response &&
       typeof response === 'object' &&

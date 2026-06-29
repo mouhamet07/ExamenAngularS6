@@ -28,6 +28,40 @@ export interface WithdrawPayload {
   amount: number;
 }
 
+export interface TransferPayload {
+  senderPhone: string;
+  receiverPhone: string;
+  amount: number;
+}
+
+export interface Facture {
+  reference: string;
+  serviceName?: string;
+  amount: number;
+  status?: string;
+  unit?: string;
+  dueDate?: string;
+}
+
+export interface PayFacturesPayload {
+  phoneNumber: string;
+  serviceName: string;
+  factureReferences: string[];
+}
+
+export interface Transaction {
+  id?: number;
+  reference?: string;
+  type?: string;
+  amount?: number;
+  status?: string;
+  description?: string;
+  createdAt?: string;
+  date?: string;
+  senderPhone?: string;
+  receiverPhone?: string;
+}
+
 export interface PageResponse<T> {
   content: T[];
   totalElements: number;

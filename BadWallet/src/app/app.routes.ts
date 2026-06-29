@@ -22,6 +22,32 @@ export const routes: Routes = [
         (m) => m.WalletOperationsComponent,
       ),
   },
-  { path: '', pathMatch: 'full', redirectTo: 'admin/wallets' },
-  { path: '**', redirectTo: 'admin/wallets' },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./features/client/dashboard/client-dashboard.component').then(
+        (m) => m.ClientDashboardComponent,
+      ),
+  },
+  {
+    path: 'transfer',
+    loadComponent: () =>
+      import('./features/client/transfer/client-transfer.component').then(
+        (m) => m.ClientTransferComponent,
+      ),
+  },
+  {
+    path: 'bills',
+    loadComponent: () =>
+      import('./features/client/bills/client-bills.component').then((m) => m.ClientBillsComponent),
+  },
+  {
+    path: 'transactions',
+    loadComponent: () =>
+      import('./features/client/transactions/client-transactions.component').then(
+        (m) => m.ClientTransactionsComponent,
+      ),
+  },
+  { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+  { path: '**', redirectTo: 'dashboard' },
 ];

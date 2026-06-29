@@ -1,0 +1,70 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Espace client</p>
+    <h1>Historique</h1>
+    <p class="subtitle">Mouvements du compte {{ clientContext.phoneNumber() }}</p>
+  </div>
+  <button type="button" (click)="loadTransactions()" [disabled]="isLoading()">Actualiser</button>
+</section>
+
+<section class="filters-panel">
+  <label>
+    <span>Type</span>
+    <select [ngModel]="typeFilter()" (ngModelChange)="typeFilter.set($event)">
+      <option value="">Tous</option>
+      <option value="DEPOSIT">Depot</option>
+      <option value="WITHDRAW">Retrait</option>
+      <option value="TRANSFER">Transfert</option>
+      <option value="PAYMENT">Paiement</option>
+    </select>
+  </label>
+
+  <label>
+    <span>Debut</span>
+    <input type="date" [ngModel]="startDate()" (ngModelChange)="startDate.set($event)" />
+  </label>
+
+  <label>
+    <span>Fin</span>
+    <input type="date" [ngModel]="endDate()" (ngModelChange)="endDate.set($event)" />
+  </label>
+</section>
+
+@if (errorMessage()) {
+  <div class="alert" role="alert">{{ errorMessage() }}</div>
+}
+
+<section class="table-panel">
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Reference</th>
+          <th>Date</th>
+          <th>Type</th>
+          <th class="amount">Montant</th>
+          <th>Statut</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr><td colspan="6" class="state-cell">Chargement...</td></tr>
+        } @else if (filteredTransactions().length === 0) {
+          <tr><td colspan="6" class="state-cell">Aucune transaction trouvee.</td></tr>
+        } @else {
+          @for (transaction of filteredTransactions(); track transaction.id || transaction.reference || $index) {
+            <tr>
+              <td>{{ transaction.reference || transaction.id || '-' }}</td>
+              <td>{{ transactionDate(transaction) ? (transactionDate(transaction) | date: 'dd/MM/yyyy HH:mm') : '-' }}</td>
+              <td>{{ transaction.type || '-' }}</td>
+              <td class="amount">{{ (transaction.amount || 0) | currency: 'XOF' : 'symbol' : '1.0-0' : 'fr-SN' }}</td>
+              <td>{{ transaction.status || '-' }}</td>
+              <td>{{ transaction.description || transaction.senderPhone || transaction.receiverPhone || '-' }}</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -1,0 +1,75 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Espace client</p>
+    <h1>Factures</h1>
+    <p class="subtitle">{{ clientContext.walletCode() }} · factures impayees du mois</p>
+  </div>
+</section>
+
+<section class="toolbar">
+  <label>
+    <span>Fournisseur</span>
+    <select [ngModel]="unitFilter()" (ngModelChange)="unitFilter.set($event)">
+      <option value="">Tous</option>
+      <option value="WOYAFAL">WOYAFAL</option>
+      <option value="ISM">ISM</option>
+      <option value="SOGEA">SOGEA</option>
+    </select>
+  </label>
+  <button type="button" (click)="loadFactures()" [disabled]="isLoading()">Filtrer</button>
+</section>
+
+@if (errorMessage()) {
+  <div class="alert error" role="alert">{{ errorMessage() }}</div>
+}
+
+@if (successMessage()) {
+  <div class="alert success" role="status">{{ successMessage() }}</div>
+}
+
+<section class="table-panel">
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Reference</th>
+          <th>Unite</th>
+          <th class="amount">Montant</th>
+          <th>Statut</th>
+          <th>Echeance</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr><td colspan="6" class="state-cell">Chargement...</td></tr>
+        } @else if (factures().length === 0) {
+          <tr><td colspan="6" class="state-cell">Aucune facture impayee.</td></tr>
+        } @else {
+          @for (facture of factures(); track facture.reference) {
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="selectedReferences().includes(facture.reference)"
+                  (change)="toggleReference(facture.reference, $any($event.target).checked)"
+                />
+              </td>
+              <td>{{ facture.reference }}</td>
+              <td>{{ facture.unit || facture.serviceName || '-' }}</td>
+              <td class="amount">{{ facture.amount | currency: 'XOF' : 'symbol' : '1.0-0' : 'fr-SN' }}</td>
+              <td>{{ facture.status || '-' }}</td>
+              <td>{{ facture.dueDate ? (facture.dueDate | date: 'dd/MM/yyyy') : '-' }}</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+  <footer class="payment-footer">
+    <strong>Total selectionne: {{ selectedTotal() | currency: 'XOF' : 'symbol' : '1.0-0' : 'fr-SN' }}</strong>
+    <button type="button" (click)="paySelected()" [disabled]="isPaying() || selectedReferences().length === 0">
+      {{ isPaying() ? 'Paiement...' : 'Payer la selection' }}
+    </button>
+  </footer>
+</section>

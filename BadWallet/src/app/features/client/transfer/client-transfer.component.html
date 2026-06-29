@@ -1,0 +1,38 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Espace client</p>
+    <h1>Transfert d'argent</h1>
+    <p class="subtitle">Expediteur: {{ clientContext.phoneNumber() }}</p>
+  </div>
+  <strong class="balance">{{ balance() | currency: 'XOF' : 'symbol' : '1.0-0' : 'fr-SN' }}</strong>
+</section>
+
+@if (errorMessage()) {
+  <div class="alert error" role="alert">{{ errorMessage() }}</div>
+}
+
+@if (successMessage()) {
+  <div class="alert success" role="status">{{ successMessage() }}</div>
+}
+
+<form class="form-panel" [formGroup]="transferForm" (ngSubmit)="submit()">
+  <label>
+    <span>Numero destinataire</span>
+    <input type="tel" formControlName="receiverPhone" placeholder="+221770000002" />
+    @if (hasError('receiverPhone')) {
+      <small>Format attendu: +221 suivi de 9 chiffres.</small>
+    }
+  </label>
+
+  <label>
+    <span>Montant</span>
+    <input type="number" formControlName="amount" min="1" step="500" />
+    @if (hasError('amount')) {
+      <small>Le montant doit etre superieur a 0.</small>
+    }
+  </label>
+
+  <button type="submit" [disabled]="isSubmitting()">
+    {{ isSubmitting() ? 'Transfert...' : 'Envoyer l'argent' }}
+  </button>
+</form>

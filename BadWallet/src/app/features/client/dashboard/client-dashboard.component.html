@@ -1,0 +1,39 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Espace client</p>
+    <h1>Dashboard</h1>
+    <p class="subtitle">{{ clientContext.phoneNumber() }} · {{ clientContext.walletCode() }}</p>
+  </div>
+  <span class="live-pill">{{ isLoading() ? 'Synchronisation...' : 'Solde en temps reel' }}</span>
+</section>
+
+@if (errorMessage()) {
+  <div class="alert" role="alert">{{ errorMessage() }}</div>
+}
+
+<section class="balance-panel">
+  <span>Solde actuel</span>
+  <strong>{{ balance() | currency: 'XOF' : 'symbol' : '1.0-0' : 'fr-SN' }}</strong>
+  <div class="quick-actions">
+    <a routerLink="/transfer">Transferer</a>
+    <a routerLink="/bills">Payer des factures</a>
+  </div>
+</section>
+
+<section class="chart-grid">
+  <article class="chart-panel">
+    <h2>Revenus</h2>
+    <div class="bar-track">
+      <span class="bar income" [style.width.%]="incomePercent()"></span>
+    </div>
+    <strong>{{ incomeAmount() | currency: 'XOF' : 'symbol' : '1.0-0' : 'fr-SN' }}</strong>
+  </article>
+
+  <article class="chart-panel">
+    <h2>Depenses</h2>
+    <div class="bar-track">
+      <span class="bar expense" [style.width.%]="expensePercent()"></span>
+    </div>
+    <strong>{{ expenseAmount() | currency: 'XOF' : 'symbol' : '1.0-0' : 'fr-SN' }}</strong>
+  </article>
+</section>
