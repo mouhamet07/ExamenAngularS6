@@ -1,0 +1,76 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Espace agent</p>
+    <h1>Portefeuilles</h1>
+    <p class="subtitle">Liste paginee des portefeuilles BadWallet.</p>
+  </div>
+
+  <div class="header-actions">
+    <a class="create-link" href="/admin/wallets/new">Nouveau</a>
+    <button class="refresh-button" type="button" (click)="loadWallets()" [disabled]="isLoading()">
+      Actualiser
+    </button>
+  </div>
+</section>
+
+@if (errorMessage()) {
+  <div class="alert" role="alert">{{ errorMessage() }}</div>
+}
+
+<section class="table-panel" [attr.aria-busy]="isLoading()">
+  <div class="table-toolbar">
+    <strong>{{ totalElements() }} portefeuille(s)</strong>
+    <span>Page {{ page() + 1 }} / {{ totalPages() || 1 }}</span>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Telephone</th>
+          <th>Email</th>
+          <th class="amount-column">Solde</th>
+          <th>Devise</th>
+          <th>Statut</th>
+          <th>Creation</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr>
+            <td colspan="7" class="state-cell">Chargement des portefeuilles...</td>
+          </tr>
+        } @else if (wallets().length === 0) {
+          <tr>
+            <td colspan="7" class="state-cell">Aucun portefeuille trouve.</td>
+          </tr>
+        } @else {
+          @for (wallet of wallets(); track trackWallet($index, wallet)) {
+            <tr>
+              <td class="code-cell">{{ wallet.code || wallet.id || '-' }}</td>
+              <td>{{ wallet.phoneNumber || '-' }}</td>
+              <td>{{ wallet.email || '-' }}</td>
+              <td class="amount-column">
+                {{ formatBalance(wallet) | currency: (wallet.currency || 'XOF') : 'symbol' : '1.0-0' : 'fr-SN' }}
+              </td>
+              <td>{{ wallet.currency || 'XOF' }}</td>
+              <td>
+                <span class="status">{{ wallet.status || 'Actif' }}</span>
+              </td>
+              <td>{{ wallet.createdAt ? (wallet.createdAt | date: 'dd/MM/yyyy') : '-' }}</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="pagination">
+    <span>Affichage {{ firstItem() }}-{{ lastItem() }} sur {{ totalElements() }}</span>
+    <div class="pagination-actions">
+      <button type="button" (click)="previousPage()" [disabled]="!canGoPrevious()">Precedent</button>
+      <button type="button" (click)="nextPage()" [disabled]="!canGoNext()">Suivant</button>
+    </div>
+  </footer>
+</section>

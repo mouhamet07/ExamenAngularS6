@@ -1,0 +1,122 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Espace agent</p>
+    <h1>Recherche & operations</h1>
+    <p class="subtitle">Retrouvez un client par telephone, puis effectuez un depot ou un retrait.</p>
+  </div>
+</section>
+
+<section class="search-panel">
+  <form class="search-form" [formGroup]="searchForm" (ngSubmit)="searchWallet()">
+    <label>
+      <span>Numero de telephone</span>
+      <input type="tel" formControlName="phoneNumber" placeholder="+221770000003" />
+      @if (hasSearchError()) {
+        <small>Format attendu: +221 suivi de 9 chiffres.</small>
+      }
+    </label>
+
+    <button type="submit" [disabled]="isSearching()">
+      {{ isSearching() ? 'Recherche...' : 'Rechercher' }}
+    </button>
+  </form>
+
+  @if (searchError()) {
+    <div class="alert error" role="alert">{{ searchError() }}</div>
+  }
+</section>
+
+@if (wallet(); as selectedWallet) {
+  <section class="details-panel">
+    <div class="details-header">
+      <div>
+        <p class="eyebrow">Portefeuille trouve</p>
+        <h2>{{ selectedWallet.code || selectedWallet.id || 'Client BadWallet' }}</h2>
+      </div>
+      <strong class="balance">
+        {{ currentBalance() | currency: (selectedWallet.currency || 'XOF') : 'symbol' : '1.0-0' : 'fr-SN' }}
+      </strong>
+    </div>
+
+    <dl class="details-grid">
+      <div>
+        <dt>Telephone</dt>
+        <dd>{{ selectedWallet.phoneNumber || '-' }}</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>{{ selectedWallet.email || '-' }}</dd>
+      </div>
+      <div>
+        <dt>Devise</dt>
+        <dd>{{ selectedWallet.currency || 'XOF' }}</dd>
+      </div>
+      <div>
+        <dt>Statut</dt>
+        <dd>{{ selectedWallet.status || 'Actif' }}</dd>
+      </div>
+      <div>
+        <dt>Creation</dt>
+        <dd>{{ selectedWallet.createdAt ? (selectedWallet.createdAt | date: 'dd/MM/yyyy') : '-' }}</dd>
+      </div>
+    </dl>
+  </section>
+
+  @if (operationMessage()) {
+    <div class="alert success" role="status">{{ operationMessage() }}</div>
+  }
+
+  @if (operationError()) {
+    <div class="alert error" role="alert">{{ operationError() }}</div>
+  }
+
+  <section class="operations-grid">
+    <form class="operation-panel" [formGroup]="depositForm" (ngSubmit)="deposit()">
+      <div>
+        <p class="eyebrow">Credit</p>
+        <h2>Depot</h2>
+      </div>
+
+      <label>
+        <span>Montant</span>
+        <input type="number" formControlName="amount" min="1" step="500" />
+        @if (hasDepositAmountError()) {
+          <small>Le montant doit etre superieur a 0.</small>
+        }
+      </label>
+
+      <label>
+        <span>Methode de paiement</span>
+        <select formControlName="paymentMethod">
+          <option value="CREDIT_CARD">Carte bancaire</option>
+          <option value="WALLET_TARGET">Wallet cible</option>
+        </select>
+      </label>
+
+      <button class="primary-button" type="submit" [disabled]="isDepositing()">
+        {{ isDepositing() ? 'Depot...' : 'Effectuer le depot' }}
+      </button>
+    </form>
+
+    <form class="operation-panel" [formGroup]="withdrawForm" (ngSubmit)="withdraw()">
+      <div>
+        <p class="eyebrow">Debit</p>
+        <h2>Retrait</h2>
+      </div>
+
+      <label>
+        <span>Montant</span>
+        <input type="number" formControlName="amount" min="1" step="500" />
+        @if (hasWithdrawAmountError()) {
+          <small>Le montant doit etre superieur a 0.</small>
+        }
+      </label>
+
+      <p class="hint">Le retrait sera execute pour {{ selectedWallet.phoneNumber }}.</p>
+
+      <button class="danger-button" type="submit" [disabled]="isWithdrawing()">
+        {{ isWithdrawing() ? 'Retrait...' : 'Effectuer le retrait' }}
+      </button>
+    </form>
+  </section>
+}

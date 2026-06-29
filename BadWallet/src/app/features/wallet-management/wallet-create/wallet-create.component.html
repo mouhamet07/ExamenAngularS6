@@ -1,0 +1,72 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Espace agent</p>
+    <h1>Creer un portefeuille</h1>
+    <p class="subtitle">Inscription d'un nouveau client BadWallet.</p>
+  </div>
+
+  <a class="back-link" routerLink="/admin/wallets">Retour au listing</a>
+</section>
+
+@if (errorMessage()) {
+  <div class="alert error" role="alert">{{ errorMessage() }}</div>
+}
+
+@if (successMessage()) {
+  <div class="alert success" role="status">{{ successMessage() }}</div>
+}
+
+<form class="form-panel" [formGroup]="walletForm" (ngSubmit)="submit()">
+  <div class="form-grid">
+    <label>
+      <span>Numero de telephone</span>
+      <input type="tel" formControlName="phoneNumber" placeholder="+221779998877" />
+      @if (hasError('phoneNumber')) {
+        <small>Format attendu: +221 suivi de 9 chiffres.</small>
+      }
+    </label>
+
+    <label>
+      <span>Email</span>
+      <input type="email" formControlName="email" placeholder="client@email.com" />
+      @if (hasError('email')) {
+        <small>Adresse email obligatoire et valide.</small>
+      }
+    </label>
+
+    <label>
+      <span>Code portefeuille</span>
+      <input type="text" formControlName="code" placeholder="WLT-TEST001" />
+      @if (hasError('code')) {
+        <small>Le code est obligatoire.</small>
+      }
+    </label>
+
+    <label>
+      <span>Devise</span>
+      <select formControlName="currency">
+        <option value="XOF">XOF</option>
+        <option value="EUR">EUR</option>
+        <option value="USD">USD</option>
+      </select>
+      @if (hasError('currency')) {
+        <small>La devise est obligatoire.</small>
+      }
+    </label>
+
+    <label class="balance-field">
+      <span>Solde initial</span>
+      <input type="number" formControlName="initialBalance" min="0" step="500" />
+      @if (hasError('initialBalance')) {
+        <small>Le solde initial doit etre superieur ou egal a 0.</small>
+      }
+    </label>
+  </div>
+
+  <footer class="form-actions">
+    <button class="secondary-button" type="button" routerLink="/admin/wallets">Annuler</button>
+    <button class="primary-button" type="submit" [disabled]="isSubmitting()">
+      {{ isSubmitting() ? 'Creation...' : 'Creer le portefeuille' }}
+    </button>
+  </footer>
+</form>

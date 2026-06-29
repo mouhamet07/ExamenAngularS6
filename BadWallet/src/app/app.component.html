@@ -1,0 +1,23 @@
+<div class="app-shell">
+  <aside class="sidebar" aria-label="Navigation principale">
+    <a class="brand" routerLink="/admin/wallets">
+      <span class="brand-mark">BW</span>
+      <span>
+        <strong>BadWallet</strong>
+        <small>Agent de guichet</small>
+      </span>
+    </a>
+
+    <nav class="nav-links">
+      <a routerLink="/admin/wallets" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Portefeuilles
+      </a>
+      <a routerLink="/admin/wallets/new" routerLinkActive="active">Nouveau portefeuille</a>
+      <a routerLink="/admin/operations" routerLinkActive="active">Recherche & operations</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet />
+  </main>
+</div>
