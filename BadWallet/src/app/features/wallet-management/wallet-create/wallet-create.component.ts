@@ -4,10 +4,11 @@ import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { CreateWalletPayload } from '../../../core/models/wallet.model';
 import { WalletApiService } from '../../../core/services/wallet-api.service';
+import { PhoneInputComponent } from '../../../shared/phone-input/phone-input.component';
 
 @Component({
   selector: 'app-wallet-create',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, PhoneInputComponent],
   templateUrl: './wallet-create.component.html',
   styleUrl: './wallet-create.component.css',
 })
@@ -27,6 +28,12 @@ export class WalletCreateComponent {
     code: ['', [Validators.required, Validators.minLength(3)]],
     currency: ['XOF', [Validators.required]],
   });
+
+  constructor() {
+    this.walletForm.controls.code.setValue(this.generateWalletCode());
+    this.walletForm.controls.code.disable();
+    this.refreshBalance();
+  }
 
   submit(): void {
     this.successMessage.set('');
@@ -58,5 +65,10 @@ export class WalletCreateComponent {
   hasError(controlName: keyof typeof this.walletForm.controls): boolean {
     const control = this.walletForm.controls[controlName];
     return control.invalid && (control.dirty || control.touched);
+  }
+
+  private generateWalletCode(): string {
+    const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
+    return `WLT-${randomPart}`;
   }
 }

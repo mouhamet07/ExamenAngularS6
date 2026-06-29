@@ -20,7 +20,7 @@
   <div class="form-grid">
     <label>
       <span>Numero de telephone</span>
-      <input type="tel" formControlName="phoneNumber" placeholder="+221779998877" />
+      <app-phone-input formControlName="phoneNumber"></app-phone-input>
       @if (hasError('phoneNumber')) {
         <small>Format attendu: +221 suivi de 9 chiffres.</small>
       }
@@ -36,7 +36,7 @@
 
     <label>
       <span>Code portefeuille</span>
-      <input type="text" formControlName="code" placeholder="WLT-TEST001" />
+      <input type="text" formControlName="code" placeholder="WLT-XXXX" readonly />
       @if (hasError('code')) {
         <small>Le code est obligatoire.</small>
       }

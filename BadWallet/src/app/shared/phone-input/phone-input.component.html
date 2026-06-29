@@ -1,0 +1,34 @@
+<div class="phone-input-wrapper">
+  <div class="country-selector" (click)="toggleDropdown()">
+    <img [src]="selectedCountry.flag" [alt]="selectedCountry.name" class="flag-img" />
+    <span class="dial-code">{{ selectedCountry.dialCode }}</span>
+    <span class="chevron">▾</span>
+    <div *ngIf="open" class="country-dropdown" (click)="$event.stopPropagation()">
+      <input
+        [(ngModel)]="search"
+        placeholder="Rechercher..."
+        class="country-search"
+        autofocus
+      />
+      <div
+        *ngFor="let country of filteredCountries"
+        class="country-option"
+        (click)="selectCountry(country)"
+      >
+        <img [src]="country.flag" class="flag-img" />
+        <span class="country-name">{{ country.name }}</span>
+        <span class="country-code">{{ country.dialCode }}</span>
+      </div>
+    </div>
+  </div>
+
+  <input
+    type="tel"
+    [value]="rawNumber"
+    [placeholder]="selectedCountry.placeholder"
+    [maxlength]="selectedCountry.maxDigits + 4"
+    [disabled]="disabled"
+    (input)="handleInput($event)"
+    class="number-input"
+  />
+</div>

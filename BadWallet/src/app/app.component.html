@@ -4,23 +4,25 @@
       <span class="brand-mark">BW</span>
       <span>
         <strong>BadWallet</strong>
-        <small>Agent de guichet</small>
+        <small>{{ isAgentArea() ? 'Agent de guichet' : 'Espace client' }}</small>
       </span>
     </a>
 
     <nav class="nav-links">
-      <span class="nav-section">Client</span>
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/transfer" routerLinkActive="active">Transfert</a>
-      <a routerLink="/bills" routerLinkActive="active">Factures</a>
-      <a routerLink="/transactions" routerLinkActive="active">Historique</a>
-
-      <span class="nav-section">Agent</span>
-      <a routerLink="/admin/wallets" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        Portefeuilles
-      </a>
-      <a routerLink="/admin/wallets/new" routerLinkActive="active">Nouveau portefeuille</a>
-      <a routerLink="/admin/operations" routerLinkActive="active">Recherche & operations</a>
+      @if (isAgentArea()) {
+        <span class="nav-section">Agent</span>
+        <a routerLink="/admin/wallets" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          Portefeuilles
+        </a>
+        <a routerLink="/admin/wallets/new" routerLinkActive="active">Nouveau portefeuille</a>
+        <a routerLink="/admin/operations" routerLinkActive="active">Recherche & operations</a>
+      } @else {
+        <span class="nav-section">Client</span>
+        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <a routerLink="/transfer" routerLinkActive="active">Transfert</a>
+        <a routerLink="/bills" routerLinkActive="active">Factures</a>
+        <a routerLink="/transactions" routerLinkActive="active">Historique</a>
+      }
     </nav>
   </aside>
 

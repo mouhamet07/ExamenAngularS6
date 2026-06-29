@@ -7,9 +7,6 @@
 
   <div class="header-actions">
     <a class="create-link" href="/admin/wallets/new">Nouveau</a>
-    <button class="refresh-button" type="button" (click)="loadWallets()" [disabled]="isLoading()">
-      Actualiser
-    </button>
   </div>
 </section>
 
@@ -33,17 +30,16 @@
           <th class="amount-column">Solde</th>
           <th>Devise</th>
           <th>Statut</th>
-          <th>Creation</th>
         </tr>
       </thead>
       <tbody>
         @if (isLoading()) {
           <tr>
-            <td colspan="7" class="state-cell">Chargement des portefeuilles...</td>
+            <td colspan="6" class="state-cell">Chargement des portefeuilles...</td>
           </tr>
         } @else if (wallets().length === 0) {
           <tr>
-            <td colspan="7" class="state-cell">Aucun portefeuille trouve.</td>
+            <td colspan="6" class="state-cell">Aucun portefeuille trouve.</td>
           </tr>
         } @else {
           @for (wallet of wallets(); track trackWallet($index, wallet)) {
@@ -58,7 +54,6 @@
               <td>
                 <span class="status">{{ wallet.status || 'Actif' }}</span>
               </td>
-              <td>{{ wallet.createdAt ? (wallet.createdAt | date: 'dd/MM/yyyy') : '-' }}</td>
             </tr>
           }
         }

@@ -2,8 +2,41 @@
   box-sizing: border-box;
 }
 
+:root {
+  --color-primary: #101828;
+  --color-primary-dark: #07120d;
+  --color-primary-light: #eef3f8;
+  --color-success: #2fbf71;
+  --color-success-dark: #17683f;
+  --color-success-light: #edfdf3;
+  --color-danger: #e5484d;
+  --color-danger-dark: #9f1f1f;
+  --color-danger-light: #fff2f2;
+  --color-text: #17202a;
+  --color-text-strong: #07120d;
+  --color-text-muted: #6b7280;
+  --color-heading-muted: #475467;
+  --color-border: #e5e7eb;
+  --color-border-strong: #cad2df;
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --radius-base: 8px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --font-family-base: "Inter", "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
 html,
 body {
   min-height: 100%;
   margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-family-base);
 }

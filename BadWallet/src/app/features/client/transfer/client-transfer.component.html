@@ -33,6 +33,10 @@
   </label>
 
   <button type="submit" [disabled]="isSubmitting()">
-    {{ isSubmitting() ? 'Transfert...' : 'Envoyer l'argent' }}
+    @if (isSubmitting()) {
+      Transfert...
+    } @else {
+      Envoyer l'argent
+    }
   </button>
 </form>

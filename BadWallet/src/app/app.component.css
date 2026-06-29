@@ -1,9 +1,9 @@
 :host {
   display: block;
   min-height: 100vh;
-  color: #17202a;
-  background: #f6f8fb;
-  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--color-text);
+  background: var(--color-background);
+  font-family: var(--font-family-base);
 }
 
 .app-shell {
@@ -17,8 +17,8 @@
   flex-direction: column;
   gap: 32px;
   padding: 24px 18px;
-  background: #101828;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .brand {
@@ -34,10 +34,10 @@
   width: 42px;
   height: 42px;
   place-items: center;
-  border-radius: 8px;
-  background: #2fbf71;
-  color: #07120d;
-  font-weight: 800;
+  border-radius: var(--radius-base);
+  background: var(--color-success);
+  color: var(--color-text-strong);
+  font-weight: 700;
 }
 
 .brand strong,
@@ -47,7 +47,7 @@
 
 .brand small {
   margin-top: 3px;
-  color: #aeb8c7;
+  color: var(--color-primary-light);
 }
 
 .nav-links {
@@ -57,9 +57,9 @@
 
 .nav-section {
   margin: 14px 0 4px;
-  color: #aeb8c7;
+  color: var(--color-primary-light);
   font-size: 0.75rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -69,17 +69,18 @@
 }
 
 .nav-links a {
-  padding: 11px 12px;
-  border-radius: 8px;
-  color: #eef3f8;
-  background: rgba(255, 255, 255, 0.08);
+  padding: 10px 12px;
+  border-radius: var(--radius-base);
+  color: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 12%, transparent);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
 }
 
 .nav-links a.active {
-  background: #2fbf71;
-  color: #07120d;
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
 }
 
 .main-content {
