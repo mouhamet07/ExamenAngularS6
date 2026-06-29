@@ -26,7 +26,7 @@
     type="tel"
     [value]="rawNumber"
     [placeholder]="selectedCountry.placeholder"
-    [maxlength]="selectedCountry.maxDigits + 4"
+    [attr.maxlength]="selectedCountry.maxDigits + 4"
     [disabled]="disabled"
     (input)="handleInput($event)"
     class="number-input"
