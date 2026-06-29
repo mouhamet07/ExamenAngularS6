@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, computed, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 import { Wallet } from '../../../core/models/wallet.model';
@@ -6,7 +6,7 @@ import { WalletApiService } from '../../../core/services/wallet-api.service';
 
 @Component({
   selector: 'app-wallet-list',
-  imports: [CurrencyPipe, DatePipe],
+  imports: [CurrencyPipe],
   templateUrl: './wallet-list.component.html',
   styleUrl: './wallet-list.component.css',
 })

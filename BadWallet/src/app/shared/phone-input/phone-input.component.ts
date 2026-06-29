@@ -128,9 +128,8 @@ export class PhoneInputComponent implements ControlValueAccessor, Validator {
 
   private emitValue(): void {
     this.onTouched();
-    this.onChange(
-      `${this.selectedCountry.dialCode}${this.rawNumber ? ' ' + this.rawNumber : ''}`.trim(),
-    );
+    const digits = this.rawNumber.replace(/\D/g, '');
+    this.onChange(`${this.selectedCountry.dialCode}${digits}`);
   }
 
   private hydrateFromValue(value?: string): void {
@@ -185,7 +184,12 @@ export class PhoneInputComponent implements ControlValueAccessor, Validator {
 
   @HostListener('document:click', ['$event'])
   handleOutsideClick(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    const target = event.target;
+    if (!(target instanceof Node)) {
+      return;
+    }
+
+    if (!this.elementRef.nativeElement.contains(target)) {
       this.open = false;
     }
   }

@@ -39,27 +39,23 @@
     <table>
       <thead>
         <tr>
-          <th>Reference</th>
           <th>Date</th>
           <th>Type</th>
           <th class="amount">Montant</th>
-          <th>Statut</th>
           <th>Description</th>
         </tr>
       </thead>
       <tbody>
         @if (isLoading()) {
-          <tr><td colspan="6" class="state-cell">Chargement...</td></tr>
+          <tr><td colspan="4" class="state-cell">Chargement...</td></tr>
         } @else if (filteredTransactions().length === 0) {
-          <tr><td colspan="6" class="state-cell">Aucune transaction trouvee.</td></tr>
+          <tr><td colspan="4" class="state-cell">Aucune transaction trouvee.</td></tr>
         } @else {
           @for (transaction of filteredTransactions(); track transaction.id || transaction.reference || $index) {
             <tr>
-              <td>{{ transaction.reference || transaction.id || '-' }}</td>
               <td>{{ transactionDate(transaction) ? (transactionDate(transaction) | date: 'dd/MM/yyyy HH:mm') : '-' }}</td>
               <td>{{ transaction.type || '-' }}</td>
               <td class="amount">{{ (transaction.amount || 0) | currency: 'XOF' : 'symbol' : '1.0-0' : 'fr-SN' }}</td>
-              <td>{{ transaction.status || '-' }}</td>
               <td>{{ transaction.description || transaction.senderPhone || transaction.receiverPhone || '-' }}</td>
             </tr>
           }
